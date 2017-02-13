@@ -42,6 +42,9 @@ public abstract class BaseMainPage {
     public abstract void onpause();
     protected abstract void initDataReally();
 
+    public abstract void onTabShow();
+    public abstract void onTabHide();
+
 
 
 

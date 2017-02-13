@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/StatusbarUtil.iml" filepath="$PROJECT_DIR$/StatusbarUtil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MainActivityUIUtil.iml" filepath="$PROJECT_DIR$/MainActivityUIUtil.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/bottomtabs/bottomtabs.iml" filepath="$PROJECT_DIR$/bottomtabs/bottomtabs.iml" />
     </modules>

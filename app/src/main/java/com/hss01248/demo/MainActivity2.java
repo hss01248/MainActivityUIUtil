@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hss01248.bottomtabs.BaseMainPage;
+import com.hss01248.bottomtabs.StatusbarUtil;
 import com.hss01248.demo.pages.Page1;
 import com.hss01248.demo.pages.Page2;
 import com.hss01248.demo.pages.Page3;

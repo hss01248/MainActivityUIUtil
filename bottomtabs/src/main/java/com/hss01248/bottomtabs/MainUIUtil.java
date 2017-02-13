@@ -29,6 +29,7 @@ public class MainUIUtil {
    private List<StatusbarUtil.StatusColorBean> beans;
    private List<TabItemBean> tabItemBeanList;
     private OnTabChangeListener tabChangeListener;
+    private int currentPageIndex;
 
     public Controller getTabController() {
         return controller;
@@ -118,7 +119,7 @@ public class MainUIUtil {
 
     private void initViewpager() {
 
-        PagerAdapter pagerAdapter = new PagerAdapter() {
+        final PagerAdapter pagerAdapter = new PagerAdapter() {
 
 
             @Override
@@ -134,8 +135,13 @@ public class MainUIUtil {
             @Override
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
-                container.removeView(pages.get(position).getRootView());
-
+                BaseMainPage page = pages.get(position);
+                View view = page.getRootView();
+                if(container.indexOfChild(view) >=0){
+                    view.setVisibility(View.INVISIBLE);
+                    page.onTabHide();
+                }
+                //container.removeView(view);
             }
 
             @Override
@@ -144,12 +150,18 @@ public class MainUIUtil {
                 return super.getItemPosition(object);
             }
 
-
-
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                container.addView(pages.get(position).getRootView());
-                return pages.get(position).getRootView();
+                BaseMainPage page = pages.get(position);
+                View view = page.getRootView();
+                if(container.indexOfChild(view) >=0){
+                    view.setVisibility(View.VISIBLE);
+                }else {
+                    container.addView(view);
+                }
+                page.onTabShow();
+
+                return view;
             }
 
         };
@@ -167,6 +179,7 @@ public class MainUIUtil {
                 if(tabChangeListener!=null){
                     tabChangeListener.onTabSelected(position);
                 }
+                currentPageIndex = position;
             }
 
             @Override
@@ -174,6 +187,17 @@ public class MainUIUtil {
 
             }
         });
+    }
+
+
+    public void onResume(){
+        BaseMainPage page = pages.get(currentPageIndex);
+        page.onResume();
+
+    }
+    public void onPause(){
+        BaseMainPage page = pages.get(currentPageIndex);
+        page.onResume();
     }
 
 
