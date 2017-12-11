@@ -1,5 +1,6 @@
 package com.hss01248.demo;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hss01248.bottomtabs.BaseMainPage;
+import com.hss01248.bottomtabs.MyStatusBarUtil;
 import com.hss01248.bottomtabs.StatusbarUtil;
 import com.hss01248.demo.pages.Page1;
 import com.hss01248.demo.pages.Page2;
@@ -25,6 +27,7 @@ public class MainActivity2 extends AppCompatActivity {
     ViewPager viewPager ;
     PagerBottomTabLayout bottomTabLayout;
     List<BaseMainPage> pages;
+    Activity activity;
 
    // List<View> viewList;
 
@@ -32,6 +35,7 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
 
        // StatusbarUtil.setBgColorLight(this,R.color.white,R.color.colorPrimary);//设置状态栏颜色为白色,第二个颜色为无法变更状态栏字体时,状态栏背景色
 
@@ -54,7 +58,7 @@ public class MainActivity2 extends AppCompatActivity {
         beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,false,R.color.base,pages.get(1).getRootView().findViewById(R.id.v_statusbar)));
         beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,true,R.color.base,pages.get(2).getRootView().findViewById(R.id.v_statusbar)));//透明且沉浸状态栏
         beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimaryDark,false,false,R.color.base,pages.get(3).getRootView().findViewById(R.id.v_statusbar)));
-        StatusbarUtil.initInTabs(this);
+        //StatusbarUtil.initInTabs(this);
     }
 
     private void initTabs() {
@@ -87,7 +91,7 @@ public class MainActivity2 extends AppCompatActivity {
         pages.add(new Page3(this));
         pages.add(new Page4(this));
 
-
+        MyStatusBarUtil.setStatusBarColor(activity,R.color.colorPrimary,false);
        /* viewList = new ArrayList<View>(pages.size());// 将要分页显示的View装入数组中
         viewList.add(View.inflate(this,R.layout.tab_0_through,null));
         viewList.add(View.inflate(this,R.layout.tab_1_through,null));
@@ -143,6 +147,21 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 pages.get(position).initData();
+                switch (position){
+                    case 0:
+                        MyStatusBarUtil.setStatusBarColor(activity,R.color.colorPrimary,false);
+                        break;
+                    case 1:
+                        MyStatusBarUtil.setStatusBarColor(activity,R.color.white,true);
+                        break;
+                    case 2:
+                        MyStatusBarUtil.setIntoStatusBar(activity,true);
+                        break;
+                    case 3:
+                        MyStatusBarUtil.setStatusBarColor(activity,R.color.colorPrimaryDark,false);
+                        break;
+                    default:break;
+                }
 
             }
 

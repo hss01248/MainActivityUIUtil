@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.readystatesoftware.systembartint.SystemBarTintManager;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -119,6 +117,8 @@ public class StatusbarUtil {
      * @param isDark
      */
     public static void setFontBlack(Activity activity,boolean isDark){
+       // setStatusBarFontIconDark(activity,isDark);
+
         if(isXiaomi()){//对于小米手机6.0以上,应该优先调用小米的方法,而不是M上的,应该改ROM了
             setMiuiStatusBarDarkMode(activity,isDark);
         }else if(isMeizu()){
@@ -126,6 +126,15 @@ public class StatusbarUtil {
         }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setBlackFontUpM(activity,isDark);
         }else {
+            /*if(isDark){
+                SystemBarTintManager mTintManager = new SystemBarTintManager(activity);
+                mTintManager.setStatusBarTintEnabled(true);
+                mTintManager.setStatusBarTintResource(R.color.half_trans);
+            }else {
+                SystemBarTintManager mTintManager = new SystemBarTintManager(activity);
+                mTintManager.setStatusBarTintEnabled(true);
+                mTintManager.setStatusBarTintResource(R.color.trans);
+            }*/
 
         }
     }
@@ -250,19 +259,21 @@ public class StatusbarUtil {
      */
     public static void setBgColor(Activity activity, @ColorRes int colorRes) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(activity, true);
-            SystemBarTintManager mTintManager = new SystemBarTintManager(activity);
+            //setTranslucentStatus(activity, true);
+            setTranslucentStatus(activity,activity.getResources().getColor(colorRes));
+           /* SystemBarTintManager mTintManager = new SystemBarTintManager(activity);
             mTintManager.setStatusBarTintEnabled(true);
-            mTintManager.setStatusBarTintResource(colorRes);
+            mTintManager.setStatusBarTintResource(colorRes);*/
         }
     }
 
     public static void setBgTransparent(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(activity, true);
+            setTranslucentStatus(activity,Color.TRANSPARENT);
+            /*setTranslucentStatus(activity, true);
             SystemBarTintManager mTintManager = new SystemBarTintManager(activity);
             mTintManager.setStatusBarTintEnabled(true);
-            mTintManager.setStatusBarTintColor(Color.TRANSPARENT);
+            mTintManager.setStatusBarTintColor(Color.TRANSPARENT);*/
         }
     }
 
@@ -291,6 +302,22 @@ public class StatusbarUtil {
             winParams.flags &= ~bits;
         }
         win.setAttributes(winParams);
+    }
+
+
+    public static void setTranslucentStatus(Activity activity,int statusBarPlaceColor) {
+
+        // 5.0以上系统状态栏透明
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(statusBarPlaceColor);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
 
@@ -396,5 +423,60 @@ public class StatusbarUtil {
 
     public interface onTabChangeListener{
         void onChange(int index);
+    }
+
+
+    private static void setStatusBarFontIconDark(Activity activity,boolean dark) {
+        // 小米MIUI
+        try {
+            Window window = activity.getWindow();
+            Class clazz = activity.getWindow().getClass();
+            Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+            int darkModeFlag = field.getInt(layoutParams);
+            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+            if (dark) {    //状态栏亮色且黑色字体
+                extraFlagField.invoke(window, darkModeFlag, darkModeFlag);
+            } else {       //清除黑色字体
+                extraFlagField.invoke(window, 0, darkModeFlag);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 魅族FlymeUI
+        try {
+            Window window = activity.getWindow();
+            WindowManager.LayoutParams lp = window.getAttributes();
+            Field darkFlag = WindowManager.LayoutParams.class
+                .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+            Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
+            darkFlag.setAccessible(true);
+            meizuFlags.setAccessible(true);
+            int bit = darkFlag.getInt(null);
+            int value = meizuFlags.getInt(lp);
+            if (dark) {
+                value |= bit;
+            } else {
+                value &= ~bit;
+            }
+            meizuFlags.setInt(lp, value);
+            window.setAttributes(lp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // android6.0+系统
+        // 这个设置和在xml的style文件中用这个<item name="android:windowLightStatusBar">true</item>属性是一样的
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (dark) {
+                activity.getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            } else {
+                int uiVisibility = activity.getWindow().getDecorView().getSystemUiVisibility();
+                activity.getWindow().getDecorView()
+                    .setSystemUiVisibility(uiVisibility | View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+        }
     }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="half_trans">#33000000</color>
+	<color name="trans">#00ffffff</color>
+
+</resources>
