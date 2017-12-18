@@ -104,7 +104,6 @@ public class MainUIUtil {
             @Override
             public void onSelected(int index, Object tag) {
                 viewPager.setCurrentItem(index,false);
-
                 // pages.get(index).initData();
                 StatusbarUtil.onTabChangeIfHasThrough(activity,beans,index);
             }
@@ -175,11 +174,13 @@ public class MainUIUtil {
 
             @Override
             public void onPageSelected(int position) {
+                controller.setSelect(position);
                 pages.get(position).initData();
-                if(tabChangeListener!=null){
+                /*if(tabChangeListener!=null){
                     tabChangeListener.onTabSelected(position);
-                }
+                }*/
                 currentPageIndex = position;
+
             }
 
             @Override
