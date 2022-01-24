@@ -2,23 +2,31 @@ package com.hss01248.demo.pages;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.hss01248.bottomtabs.BaseMainPage;
 import com.hss01248.demo.R;
+import com.hss01248.demo.databinding.Tab3ThroughBinding;
 import com.hss01248.pagestate.PageManager;
 
 /**
  * Created by Administrator on 2017/2/10 0010.
  */
 
-public class Page4 extends BaseMainPage {
+public class Page4 extends BaseMainPage<Tab3ThroughBinding> {
     public Page4(Activity mainActivity) {
         super(mainActivity);
     }
 
     @Override
-    protected int getLayoutRes() {
-        return R.layout.tab_3_through;
+    protected Tab3ThroughBinding initViewBinding(LayoutInflater layoutInflater) {
+        return Tab3ThroughBinding.inflate(layoutInflater);
+    }
+
+    @Override
+    public View getStatusBarView() {
+        return binding.vStatusbar;
     }
 
     @Override
@@ -36,7 +44,7 @@ public class Page4 extends BaseMainPage {
     protected void initDataReally() {
 
         if(pageManager==null){
-            pageManager =    PageManager.init(getRootView().findViewById(R.id.text), true, new Runnable() {
+            pageManager =    PageManager.init(binding.getRoot().findViewById(R.id.text), true, new Runnable() {
                 @Override
                 public void run() {
                     pageManager.showEmpty();

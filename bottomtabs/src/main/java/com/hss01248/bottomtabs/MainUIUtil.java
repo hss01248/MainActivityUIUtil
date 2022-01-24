@@ -3,6 +3,10 @@ package com.hss01248.bottomtabs;
 import android.app.Activity;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.view.View;
@@ -21,7 +25,7 @@ import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectListener;
  * Created by Administrator on 2017/2/10 0010.
  */
 
-public class MainUIUtil {
+public class MainUIUtil implements DefaultLifecycleObserver {
     private ViewPager viewPager ;
    private PagerBottomTabLayout bottomTabLayout;
    private List<BaseMainPage> pages;
@@ -58,17 +62,19 @@ public class MainUIUtil {
         this.tabChangeListener = tabChangeListener;
     }
 
-    private MainUIUtil(Activity activity){
+    private MainUIUtil(FragmentActivity activity){
         this.activity = activity;
         activity. setContentView(R.layout.activity_main2);
         viewPager = (ViewPager) activity.findViewById(R.id.vp_container);
         bottomTabLayout = (PagerBottomTabLayout) activity.findViewById(R.id.tab);
+        activity.getLifecycle().addObserver(this);
+
 
 
     }
 
     private  static MainUIUtil instance;
-    public static MainUIUtil getInstance(Activity activity){
+    public static MainUIUtil getInstance(FragmentActivity activity){
         if(instance==null){
             synchronized (MainUIUtil.class){
                 if(instance ==null){
@@ -135,7 +141,7 @@ public class MainUIUtil {
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
                 BaseMainPage page = pages.get(position);
-                View view = page.getRootView();
+                View view = page.getBinding().getRoot();
                 if(container.indexOfChild(view) >=0){
                     view.setVisibility(View.INVISIBLE);
                     page.onTabHide();
@@ -152,7 +158,7 @@ public class MainUIUtil {
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 BaseMainPage page = pages.get(position);
-                View view = page.getRootView();
+                View view = page.getBinding().getRoot();
                 if(container.indexOfChild(view) >=0){
                     view.setVisibility(View.VISIBLE);
                 }else {
@@ -191,15 +197,18 @@ public class MainUIUtil {
     }
 
 
-    public void onResume(){
+    @Override
+    public void onResume(@NonNull LifecycleOwner owner) {
         BaseMainPage page = pages.get(currentPageIndex);
         page.onResume();
+    }
 
-    }
-    public void onPause(){
+    @Override
+    public void onPause(@NonNull LifecycleOwner owner) {
         BaseMainPage page = pages.get(currentPageIndex);
         page.onResume();
     }
+
 
 
 

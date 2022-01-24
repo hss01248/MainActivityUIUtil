@@ -54,10 +54,10 @@ public class MainActivity2 extends AppCompatActivity {
     List<StatusbarUtil.StatusColorBean> beans;
     private void initStatusBg() {
         beans = new ArrayList<>();
-        beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimary,false,false,R.color.base,pages.get(0).getRootView().findViewById(R.id.v_statusbar)));
-        beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,false,R.color.base,pages.get(1).getRootView().findViewById(R.id.v_statusbar)));
-        beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,true,R.color.base,pages.get(2).getRootView().findViewById(R.id.v_statusbar)));//透明且沉浸状态栏
-        beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimaryDark,false,false,R.color.base,pages.get(3).getRootView().findViewById(R.id.v_statusbar)));
+        beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimary,false,false,R.color.base,pages.get(0).getStatusBarView()));
+        beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,false,R.color.base,pages.get(1).getStatusBarView()));
+        beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,true,R.color.base,pages.get(2).getStatusBarView()));//透明且沉浸状态栏
+        beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimaryDark,false,false,R.color.base,pages.get(3).getStatusBarView()));
         //StatusbarUtil.initInTabs(this);
     }
 
@@ -117,7 +117,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
-                container.removeView(pages.get(position).getRootView());
+                container.removeView(pages.get(position).getBinding().getRoot());
 
             }
 
@@ -131,8 +131,8 @@ public class MainActivity2 extends AppCompatActivity {
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                container.addView(pages.get(position).getRootView());
-                return pages.get(position).getRootView();
+                container.addView(pages.get(position).getBinding().getRoot());
+                return pages.get(position).getBinding().getRoot();
             }
 
         };

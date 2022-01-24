@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         pages.add(new Page4(this));
 
         List<StatusbarUtil.StatusColorBean>   beans = new ArrayList<>();
-        beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimary,false,false,R.color.base,pages.get(0).getRootView().findViewById(R.id.v_statusbar)));
-        beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,false,R.color.base,pages.get(1).getRootView().findViewById(R.id.v_statusbar)));
-        beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,true,R.color.base,pages.get(2).getRootView().findViewById(R.id.v_statusbar)));//透明且沉浸状态栏
-        beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimaryDark,false,false,R.color.base,pages.get(3).getRootView().findViewById(R.id.v_statusbar)));
+        beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimary,false,false,R.color.base,pages.get(0).getStatusBarView()));
+        beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,false,R.color.base,pages.get(1).getStatusBarView()));
+        beans.add(new StatusbarUtil.StatusColorBean(R.color.white,true,true,R.color.base,pages.get(2).getStatusBarView()));//透明且沉浸状态栏
+        beans.add(new StatusbarUtil.StatusColorBean(R.color.colorPrimaryDark,false,false,R.color.base,pages.get(3).getStatusBarView()));
 
         List<MainUIUtil.TabItemBean> tabBeans = new ArrayList<>();
         tabBeans.add(new MainUIUtil.TabItemBean(R.mipmap.home_normal,R.mipmap.home_pressed,"首页",R.color.colorPrimary));

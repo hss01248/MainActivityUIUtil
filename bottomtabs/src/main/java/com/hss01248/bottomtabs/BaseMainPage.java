@@ -1,28 +1,39 @@
 package com.hss01248.bottomtabs;
 
 import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.viewbinding.ViewBinding;
 
 /**
  * Created by Administrator on 2017/2/10 0010.
  */
 
-public abstract class BaseMainPage {
+public abstract class BaseMainPage<T extends ViewBinding> {
     protected Activity activity;
-    public ViewGroup getRootView() {
-        return rootView;
-    }
+
 
     public BaseMainPage(Activity mainActivity){
         activity = mainActivity;
-        rootView = (ViewGroup) View.inflate(mainActivity,getLayoutRes(),null);
+        binding = initViewBinding(activity.getLayoutInflater());
     }
 
-    protected abstract int getLayoutRes();
+    //protected abstract int getLayoutRes();
+
+    protected abstract T initViewBinding(LayoutInflater layoutInflater);
+
+    public abstract View getStatusBarView();
+
+    public T getBinding() {
+        return binding;
+    }
+
+    protected T binding;
 
 
-    private ViewGroup rootView;
+
 
     public void initData(){
         if(!hasInitData){
@@ -40,6 +51,7 @@ public abstract class BaseMainPage {
 
     public abstract void onResume();
     public abstract void onpause();
+
     protected abstract void initDataReally();
 
     public  void onTabShow(){};
