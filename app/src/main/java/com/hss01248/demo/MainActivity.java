@@ -1,7 +1,7 @@
 package com.hss01248.demo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hss01248.bottomtabs.BaseMainPage;
 import com.hss01248.bottomtabs.MainUIUtil;
