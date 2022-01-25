@@ -20,15 +20,15 @@ public class Page3 extends BaseMainPage<Tab2ThroughBinding> {
     }
 
     @Override
-    protected Tab2ThroughBinding initViewBinding(LayoutInflater layoutInflater) {
+    protected Tab2ThroughBinding initRealViewBinding(LayoutInflater layoutInflater) {
         return Tab2ThroughBinding.inflate(layoutInflater);
     }
 
-    @Override
-    public View getStatusBarView() {
-        return binding.vStatusbar;
-    }
 
+    @Override
+    protected void initViewReally() {
+
+    }
 
 
     @Override
@@ -46,7 +46,7 @@ public class Page3 extends BaseMainPage<Tab2ThroughBinding> {
     protected void initDataReally() {
 
         if(pageManager==null){
-            pageManager =    PageManager.init(getBinding().getRoot().findViewById(R.id.text), true, new Runnable() {
+            pageManager =    PageManager.init(getRootView().findViewById(R.id.text), true, new Runnable() {
                 @Override
                 public void run() {
                     pageManager.showEmpty();

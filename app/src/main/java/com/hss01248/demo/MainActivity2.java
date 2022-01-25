@@ -39,7 +39,7 @@ public class MainActivity2 extends AppCompatActivity {
 
        // StatusbarUtil.setBgColorLight(this,R.color.white,R.color.colorPrimary);//设置状态栏颜色为白色,第二个颜色为无法变更状态栏字体时,状态栏背景色
 
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.util_activity_main_page2);
        // StatusbarUtil.setBgColor(this,R.color.base);//设置为某一种统一的颜色时
 
         viewPager = (ViewPager) findViewById(R.id.vp_container);
@@ -117,7 +117,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
-                container.removeView(pages.get(position).getBinding().getRoot());
+                container.removeView(pages.get(position).getRootView());
 
             }
 
@@ -131,8 +131,8 @@ public class MainActivity2 extends AppCompatActivity {
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                container.addView(pages.get(position).getBinding().getRoot());
-                return pages.get(position).getBinding().getRoot();
+                container.addView(pages.get(position).getRootView());
+                return pages.get(position).getRootView();
             }
 
         };

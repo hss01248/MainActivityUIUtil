@@ -3,14 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@android:color/holo_orange_dark"
     android:layout_height="match_parent">
-    <View
+   <!-- <View
         android:id="@+id/v_statusbar"
         android:background="@android:color/transparent"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
             android:visibility="gone"
         android:layout_width="match_parent"
         >
-    </View>
+    </View>-->
     <TextView
         android:id="@+id/text"
         android:text="tab1"

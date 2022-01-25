@@ -3,9 +3,10 @@ package com.hss01248.bottomtabs;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.viewbinding.ViewBinding;
+
+import com.hss01248.bottomtabs.databinding.UtilTabXThroughWithStatusbarBinding;
 
 /**
  * Created by Administrator on 2017/2/10 0010.
@@ -15,35 +16,49 @@ public abstract class BaseMainPage<T extends ViewBinding> {
     protected Activity activity;
 
 
+    public View getRootView(){
+       return rootBinding.getRoot();
+    }
+    UtilTabXThroughWithStatusbarBinding rootBinding;
     public BaseMainPage(Activity mainActivity){
         activity = mainActivity;
-        binding = initViewBinding(activity.getLayoutInflater());
+         rootBinding = UtilTabXThroughWithStatusbarBinding.inflate(activity.getLayoutInflater());
+
     }
 
     //protected abstract int getLayoutRes();
 
-    protected abstract T initViewBinding(LayoutInflater layoutInflater);
+    protected abstract T initRealViewBinding(LayoutInflater layoutInflater);
 
-    public abstract View getStatusBarView();
-
-    public T getBinding() {
-        return binding;
+    public  View getStatusBarView(){
+        return rootBinding.vStatusbarUtil;
     }
 
-    protected T binding;
+    public T getRealBinding() {
+        return realBinding;
+    }
 
+    protected T realBinding;
 
+    protected boolean isFirstTimeIn;
 
 
     public void initData(){
+        if(!isFirstTimeIn){
+            isFirstTimeIn = true;
+            realBinding = initRealViewBinding(activity.getLayoutInflater());
+            rootBinding.llPageRoot.addView(realBinding.getRoot());
+            initViewReally();
+        }
         if(!hasInitData){
             initDataReally();
         }
     }
 
+    protected abstract void initViewReally();
 
 
-    private boolean hasInitData;
+    protected boolean hasInitData;
 
     protected void setHasInitDataSuccess(){
         this.hasInitData = true;

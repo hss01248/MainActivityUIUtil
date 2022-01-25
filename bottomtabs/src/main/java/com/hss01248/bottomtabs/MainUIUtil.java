@@ -64,7 +64,7 @@ public class MainUIUtil implements DefaultLifecycleObserver {
 
     private MainUIUtil(FragmentActivity activity){
         this.activity = activity;
-        activity. setContentView(R.layout.activity_main2);
+        activity. setContentView(R.layout.util_activity_main_page2);
         viewPager = (ViewPager) activity.findViewById(R.id.vp_container);
         bottomTabLayout = (PagerBottomTabLayout) activity.findViewById(R.id.tab);
         activity.getLifecycle().addObserver(this);
@@ -141,7 +141,7 @@ public class MainUIUtil implements DefaultLifecycleObserver {
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
                 BaseMainPage page = pages.get(position);
-                View view = page.getBinding().getRoot();
+                View view = page.getRootView();
                 if(container.indexOfChild(view) >=0){
                     view.setVisibility(View.INVISIBLE);
                     page.onTabHide();
@@ -158,7 +158,7 @@ public class MainUIUtil implements DefaultLifecycleObserver {
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 BaseMainPage page = pages.get(position);
-                View view = page.getBinding().getRoot();
+                View view = page.getRootView();
                 if(container.indexOfChild(view) >=0){
                     view.setVisibility(View.VISIBLE);
                 }else {
