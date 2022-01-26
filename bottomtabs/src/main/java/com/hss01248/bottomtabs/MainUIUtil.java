@@ -73,16 +73,9 @@ public class MainUIUtil implements DefaultLifecycleObserver {
 
     }
 
-    private  static MainUIUtil instance;
-    public static MainUIUtil getInstance(FragmentActivity activity){
-        if(instance==null){
-            synchronized (MainUIUtil.class){
-                if(instance ==null){
-                    instance = new MainUIUtil(activity);
-                }
-            }
-        }
-        return instance;
+    private   MainUIUtil instance;
+    public static MainUIUtil newInstance(FragmentActivity activity){
+        return  new MainUIUtil(activity);
     }
 
     public void addInfos(List<BaseMainPage> pages, List<StatusbarUtil.StatusColorBean> beans,List<TabItemBean> tabItemBeanList){

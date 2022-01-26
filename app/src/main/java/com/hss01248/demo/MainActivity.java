@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        mainUIUtil =  MainUIUtil.getInstance(this);
+        mainUIUtil =  MainUIUtil.newInstance(this);
         mainUIUtil.addInfos(pages,beans,tabBeans);
 
 
